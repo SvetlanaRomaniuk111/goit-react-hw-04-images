@@ -1,37 +1,37 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 const modalRoot = document.getElementById('modal-root');
 
-export default class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyEsc);
-  }
+const Modal = props => {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyEsc);
+    return () => {
+      window.removeEventListener('keydown', handleKeyEsc);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyEsc);
-  }
-
-  handleKeyEsc = e => {
+  const handleKeyEsc = e => {
     if (e.code === 'Escape') {
-      this.props.closeModal();
+      props.closeModal();
     }
   };
 
-  handleOnClick = e => {
+  const handleOnClick = e => {
     if (e.target === e.currentTarget) {
-      this.props.closeModal();
+      props.closeModal();
     }
   };
 
-  render() {
-    return createPortal(
-      <div className="Overlay" onClick={this.handleOnClick}>
-        <div className="Modal">
-          <img src={this.props.imageURL} alt="sadasd" />
-        </div>
-      </div>,
-      modalRoot
-    );
-  }
-}
+  return createPortal(
+    <div className="Overlay" onClick={handleOnClick}>
+      <div className="Modal">
+        <img src={props.imageURL} alt="sadasd" />
+      </div>
+    </div>,
+    modalRoot
+  );
+};
+
+export default Modal;
