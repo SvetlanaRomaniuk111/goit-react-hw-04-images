@@ -19,11 +19,11 @@ export const App = () => {
   };
 
   const submit = value => {
+    setGallery([]);
+    setQuery(value);
+    setTotalHits(null);
     setPage(1);
     setIsLoading(true);
-    setQuery(value);
-    setGallery([]);
-    setTotalHits(null);
   };
 
   useEffect(() => {
